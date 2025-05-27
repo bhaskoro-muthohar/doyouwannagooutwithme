@@ -12,10 +12,14 @@
             <div class="gif_container">
                 <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDdtZ2JiZDR0a3lvMWF4OG8yc3p6Ymdvd3g2d245amdveDhyYmx6eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/cLS1cfxvGOPVpf9g3y/giphy.gif" alt="Cute animated illustration">
             </div>
+            <div id="tauntMessage" style="display: none;"></div>
             <div class = "buttons">
                 <button class="btn" id = "yesButton" onclick="nextPage()">Yes</button>
                 <button class="btn" id="noButton" onmouseover="moveButton()" onclick="moveButton()">No</button>
                 <script>
+                    const taunts = ["Too slow!", "Try again!", "Haha!", "Can't catch me!", "Missed me!"];
+                    let tauntTimeout;
+
                     function nextPage() {
                         window.location.href = "yes.html";
                     }
@@ -25,6 +29,23 @@
                         var y = Math.random() * (window.innerHeight - document.getElementById('noButton').offsetHeight);
                         document.getElementById('noButton').style.left = `${x}px`;
                         document.getElementById('noButton').style.top = `${y}px`;
+
+                        const tauntMessageDiv = document.getElementById('tauntMessage');
+                        const randomTaunt = taunts[Math.floor(Math.random() * taunts.length)];
+                        tauntMessageDiv.innerText = randomTaunt;
+                        tauntMessageDiv.style.display = 'block';
+                        
+                        // Position taunt near the button's old position or a fixed spot
+                        // For simplicity, let's try a fixed position for now
+                        tauntMessageDiv.style.left = '50%';
+                        tauntMessageDiv.style.top = '20%';
+                        tauntMessageDiv.style.transform = 'translateX(-50%)';
+
+
+                        clearTimeout(tauntTimeout); // Clear any existing timeout
+                        tauntTimeout = setTimeout(() => {
+                            tauntMessageDiv.style.display = 'none';
+                        }, 1750); // Hide after 1.75 seconds
                     }
                 </script> 
             </div>
