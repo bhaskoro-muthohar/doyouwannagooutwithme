@@ -73,3 +73,45 @@ This document outlines the manual testing steps for the "Do you wanna go out wit
 
 ---
 End of Manual Testing Steps.
+
+## 5. Date Selection Feature (`yes.html`)
+
+**Objective:** Verify the functionality and UI of the date selection feature on the `yes.html` page.
+
+**Test Case 5.1: Verify UI Elements**
+- **Steps:**
+    1. Navigate to `yes.html` (e.g., by clicking "Yes" on `index.html`).
+- **Expected Result:**
+    1. The heading "Let's pick a day for our adventure!" is displayed.
+    2. A date input field (`<input type="date">`) is visible.
+    3. A "Save Date" button is visible.
+    4. An empty area for response messages (initially) is present below the button.
+
+**Test Case 5.2: Date Selection and Validation**
+- **Steps:**
+    1. On `yes.html`, do *not* select a date.
+    2. Click the "Save Date" button.
+- **Expected Result:**
+    1. The response message area displays "Please select a date first!" (or a similar validation message).
+    2. The message is styled to indicate an alert/warning (e.g., orange text).
+- **Steps (Continued):**
+    3. Select a valid date using the date input field.
+    4. Click the "Save Date" button.
+- **Expected Result (Continued):**
+    5. The response message area displays "Saving date..." or a similar pending message (this will quickly be followed by an error in the current setup, which is tested next).
+
+**Test Case 5.3: Mock Backend Interaction (Frontend Only)**
+- **Precondition:** No actual backend is expected to be running at `/api/save-date` for this test. We are testing the client's behavior when the backend is unavailable or returns an error.
+- **Steps:**
+    1. On `yes.html`, select a valid date (e.g., tomorrow's date).
+    2. Open the browser's Developer Tools and switch to the "Network" tab. (Ensure "Preserve log" is checked if you want to see requests across navigations, though not strictly needed here).
+    3. Click the "Save Date" button.
+- **Expected Result:**
+    1. A POST request is listed in the Network tab, targeting the placeholder URL (e.g., `/api/save-date`).
+    2. The request details (viewable in Developer Tools by clicking on the request) show:
+        a. Request Method: POST
+        b. Request Headers: Content-Type: application/json
+        c. Request Payload/Body: Contains the selected date in JSON format (e.g., `{"date":"YYYY-MM-DD"}`).
+    3. The request in the Network tab will likely show a status indicating failure (e.g., 404 Not Found, net::ERR_CONNECTION_REFUSED).
+    4. The response message area on the page displays an error message indicating the failure (e.g., "Error: Server responded with 404", "Error: Could not save date. Please try again.", or similar, depending on the exact fetch error).
+    5. The error message is styled to indicate an error (e.g., red text).

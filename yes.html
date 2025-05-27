@@ -12,7 +12,66 @@
             <div class="gif_container">
                 <img src="https://media0.giphy.com/media/T86i6yDyOYz7J6dPhf/giphy.gif" alt="Cute animated illustration">
             </div>
+            <div class="date_selection_container">
+                <h2>Let's pick a day for our adventure!</h2>
+                <input type="date" id="selectedDate">
+                <button id="saveDateButton" class="btn">Save Date</button>
+                <div id="responseMessage" style="margin-top: 10px;"></div>
+            </div>
         </div>
        
+        <script>
+            const saveButton = document.getElementById('saveDateButton');
+            const dateInput = document.getElementById('selectedDate');
+            const responseMessageDiv = document.getElementById('responseMessage');
+            // You can change this URL once you have your actual backend endpoint
+            const backendUrl = '/api/save-date'; 
+
+            saveButton.addEventListener('click', function() {
+              const selectedDate = dateInput.value;
+
+              if (!selectedDate) {
+                responseMessageDiv.textContent = 'Please select a date first!';
+                responseMessageDiv.style.color = 'orange'; // Or a more prominent error color
+                return;
+              }
+
+              responseMessageDiv.textContent = 'Saving date...';
+              responseMessageDiv.style.color = 'white'; // Default message color
+
+              fetch(backendUrl, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ date: selectedDate }),
+              })
+              .then(response => {
+                if (!response.ok) {
+                  // Try to get error message from backend if available
+                  return response.json().then(errData => {
+                      throw new Error(errData.message || `Server responded with ${response.status}`);
+                  }).catch(() => {
+                      // Fallback if response is not JSON or no message
+                      throw new Error(`Server responded with ${response.status}`);
+                  });
+                }
+                return response.json(); // Assuming backend sends a JSON response
+              })
+              .then(data => {
+                // Assuming backend sends back a success message, e.g., { message: "Date saved!" }
+                responseMessageDiv.textContent = data.message || 'Date successfully recorded!';
+                responseMessageDiv.style.color = '#a7d7a7'; // A success green color
+                // Optionally, disable the button or hide the form
+                // saveButton.disabled = true;
+                // dateInput.disabled = true;
+              })
+              .catch(error => {
+                console.error('Error saving date:', error);
+                responseMessageDiv.textContent = `Error: ${error.message || 'Could not save date. Please try again.'}`;
+                responseMessageDiv.style.color = '#ff7b7b'; // A failure red color
+              });
+            });
+        </script>
     </body> 
 </html>

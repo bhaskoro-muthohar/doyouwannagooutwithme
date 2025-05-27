@@ -56,6 +56,39 @@ body {
     /* optional: adds some space between the buttons */
 }
 
+.date_selection_container {
+    margin-top: 30px;
+    text-align: center;
+    font-family: 'Nunito', sans-serif; /* Assuming Nunito is still desired */
+    color: white; /* Or another suitable color from the theme */
+}
+
+.date_selection_container h2 {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+#selectedDate {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #FFB6C1; /* Theme color */
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    margin-right: 10px; /* Space between date input and button */
+}
+
+/* Ensure the .btn class (already styled) applies well to #saveDateButton */
+/* If #saveDateButton needs specific tweaks, add them here */
+#saveDateButton {
+    /* Potentially add specific margin if needed, but .btn should cover most */
+}
+
+#responseMessage {
+    margin-top: 15px;
+    font-size: 16px;
+    min-height: 20px; /* To prevent layout shift when message appears */
+}
+
 .btn {
     background-color: #FFB6C1;
     color: white;
